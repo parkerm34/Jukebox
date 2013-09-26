@@ -7,17 +7,25 @@ public class StudentList
 
 	private ArrayList<Student> students = new ArrayList<Student>();
 
-	public void addStudent(Student x)
+	public void addStudent(Student stu)
 	{
-		//TODO IMPLEMENT METHOD
+		students.add(stu);
 	}
 
-	public Student removeStudent()
+	public void removeStudent(Student stu)
 	{
-		//TODO IMPLEMENT METHOD
-		return null;
+		students.remove(stu);
+	}
+	
+	public Student removeStudent(int index)
+	{
+		return students.remove(index);
 	}
 
+	/*******************************************************************************************/
+	/* SETTERS AND GETTERS FOR CLASS STUDENTLIST											   */
+	/*******************************************************************************************/
+	
 	public ArrayList<Student> getStudents()
 	{
 		return students;

@@ -3,32 +3,45 @@ package model;
 public class Student
 {
 
-	private String name = "";
+	private String id = "";
+	private String password = "";
+
 	private int timeLeft;
 	private int dayCount;
-	private long ID;
+
 	private boolean activeStudent;
-	
+
+	public Student(String id, String password)
+	{
+		this.id = id;
+		this.password = password;
+	}
+
 	public Boolean allowedToPlay()
 	{
-		//TODO IMPLEMENT METHOD	
-		
-		return true;
-	}
-	
-	public Boolean activeStudent(){
-		//TODO implement method 
+		// TODO IMPLEMENT METHOD
+
 		return true;
 	}
 
+	public Boolean activeStudent()
+	{
+		// TODO implement method
+		return true;
+	}
+
+	/*******************************************************************************************/
+	/* SETTERS AND GETTERS FOR CLASS Student												   */
+	/*******************************************************************************************/
+	
 	public String getName()
 	{
-		return name;
+		return id;
 	}
 
 	public void setName(String name)
 	{
-		this.name = name;
+		this.id = name;
 	}
 
 	public int getTimeLeft()
@@ -51,16 +64,6 @@ public class Student
 		this.dayCount = dayCount;
 	}
 
-	public long getID()
-	{
-		return ID;
-	}
-
-	public void setID(long iD)
-	{
-		ID = iD;
-	}
-
 	public boolean isActiveStudent()
 	{
 		return activeStudent;
@@ -69,6 +72,16 @@ public class Student
 	public void setActiveStudent(boolean activeStudent)
 	{
 		this.activeStudent = activeStudent;
+	}
+
+	public String getPassword()
+	{
+		return password;
+	}
+
+	public void setPassword(String password)
+	{
+		this.password = password;
 	}
 
 }

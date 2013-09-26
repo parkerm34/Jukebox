@@ -8,6 +8,17 @@ public class Song {
 	private int dayCount;
 	private int fullCount;
 	
+	
+	
+	public Song(String songName, String artistName, int songTime)
+	{
+		this.songName = songName;
+		this.artistName = artistName;
+		this.songTime = songTime;
+		
+		//TODO set up daycount and full count
+	}
+
 	public boolean allowedToPlay()
 	{
 		if(dayCount < 5)
