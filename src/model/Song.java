@@ -8,6 +8,17 @@ public class Song {
 	private int dayCount;
 	private int fullCount;
 	
+	public boolean allowedToPlay()
+	{
+		if(dayCount < 5)
+			return true;
+		return false;
+	}
+	
+	/*******************************************************************************************/
+	/* SETTERS AND GETTERS FOR CLASS SONG													   */
+	/*******************************************************************************************/
+	
 	public void setSongName(String name)
 	{
 		this.songName = name;
@@ -41,5 +52,20 @@ public class Song {
 	public String getArtistName()
 	{
 		return this.artistName;
+	}
+	
+	public int getSongTime()
+	{
+		return this.songTime;
+	}
+	
+	public int getDayCount()
+	{
+		return this.dayCount;
+	}
+	
+	public int getFullCount()
+	{
+		return this.fullCount;
 	}
 }

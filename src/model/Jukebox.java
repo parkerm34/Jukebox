@@ -5,9 +5,12 @@ package model;
 
 public class Jukebox {
 
+	private SongList songs;
+	private StudentList students;
+	private PlayList queued;
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		String parker = "is stupid";
+
 
 	}
 
