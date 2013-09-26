@@ -20,7 +20,12 @@ public class JukeboxGUI extends JFrame{
 
 	public static void main(String[] args)
 	{
-		new JukeboxGUI().setVisible(true);
+		String username = JOptionPane.showInputDialog("Please enter username");
+		
+		JOptionPane.showInputDialog("Please enter password for user " + username);
+		
+		if(true)
+			new JukeboxGUI().setVisible(true);
 	}
 	
 	private TableModel modelOfSongs;
@@ -28,15 +33,7 @@ public class JukeboxGUI extends JFrame{
 	
 	public JukeboxGUI()
 	{
-		String username = JOptionPane.showInputDialog("Please enter username");
-		
-		JOptionPane.showInputDialog("Please enter password for user " + username);
-		
-		if(true)
-		{
-			this.setVisible(true);
 			layoutGUI();
-		}
 	}
 	
 	private void layoutGUI()
