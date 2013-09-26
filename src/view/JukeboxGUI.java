@@ -3,6 +3,8 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,7 +18,6 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import model.SongList;
-import model.StudentList;
 
 public class JukeboxGUI extends JFrame{
 
@@ -52,8 +53,9 @@ public class JukeboxGUI extends JFrame{
 		modelOfSongs = new SongList();
 		tableOfSongs = new JTable(modelOfSongs);
 		tableOfSongs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
+
 		JScrollPane scrollPane = new JScrollPane(tableOfSongs);
+		
 		
 		RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modelOfSongs);
 		
@@ -65,6 +67,25 @@ public class JukeboxGUI extends JFrame{
 		JPanel panel = new JPanel();
 		panel.add(songSelect);
 		add(panel, BorderLayout.WEST);
+		songSelect.addActionListener(new ButtonListener());
 	}
-
+	
+	private class ButtonListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent arg0)
+		{
+			int viewRow = tableOfSongs.getSelectedRow();
+			
+			if (viewRow < 0)
+				System.out.println("index " + viewRow
+						+ " means no row is selected");
+			else
+			{
+				int modelRow = tableOfSongs.convertRowIndexToModel(viewRow);
+				System.out.println("index " + viewRow + " has the name '"
+						+ modelOfSongs.getValueAt(modelRow, 0) + "'");
+			}
+		}
+	}
 }
