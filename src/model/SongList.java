@@ -15,11 +15,6 @@ public class SongList implements TableModel {
 		setUpDefaultList();
 	}
 	
-	public SongList(int x)
-	{
-		
-	}
-	
 	private void setUpDefaultList()
 	{
 		songs.add(new Song("Blue Ridge Mountain Mist", "Ralph Schuckett", 38));
