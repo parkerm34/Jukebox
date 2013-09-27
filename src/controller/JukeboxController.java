@@ -28,7 +28,7 @@ public class JukeboxController
 
 		loginWindow.addButtonActionListener(new ButtonListener());
 
-		theGUI.setVisible(true);
+//		theGUI.setVisible(true);
 		loginWindow.setVisible(true);
 	}
 	
@@ -37,6 +37,8 @@ public class JukeboxController
 		if(theModel.login(loginWindow.getUsername(), loginWindow.getPassword()))
 		{
 			System.out.println("fuck Yeah");
+			theGUI.setVisible(true);
+			loginWindow.setVisible(false);
 		}
 		else
 		{

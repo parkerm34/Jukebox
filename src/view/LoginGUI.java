@@ -24,15 +24,14 @@ public class LoginGUI extends JFrame
 
 	public LoginGUI()
 	{
-		setTitle("University of Arizona Student Jukebox");
+		setTitle("UA Student Jukebox Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		this.setSize(340, 200);
+		this.setSize(300, 125);
 		this.setLocationRelativeTo(null);
-		;
 
-		nameField.setPreferredSize(new Dimension(240, 20));
-		passwordField.setPreferredSize(new Dimension(240, 20));
+		nameField.setPreferredSize(new Dimension(150, 20));
+		passwordField.setPreferredSize(new Dimension(150, 20));
 
 		loginButton.setActionCommand("login");
 
