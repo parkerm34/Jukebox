@@ -2,6 +2,7 @@ package model;
 
 public class Song {
 
+	private String songExt;
 	private String songName;
 	private String artistName;
 	private int songTime;
@@ -10,8 +11,9 @@ public class Song {
 	
 	
 	
-	public Song(String songName, String artistName, int songTime)
+	public Song(String songExt, String songName, String artistName, int songTime)
 	{
+		this.songExt = songExt;
 		this.songName = songName;
 		this.artistName = artistName;
 		this.songTime = songTime;
@@ -29,6 +31,11 @@ public class Song {
 	/*******************************************************************************************/
 	/* SETTERS AND GETTERS FOR CLASS SONG													   */
 	/*******************************************************************************************/
+	
+	public void setSongExt(String songExt)
+	{
+		this.songExt = songExt;
+	}
 	
 	public void setSongName(String name)
 	{
@@ -53,6 +60,11 @@ public class Song {
 	public void setFullCount(int count)
 	{
 		this.fullCount = count;
+	}
+	
+	public String getSongExt()
+	{
+		return this.songExt;
 	}
 	
 	public String getSongName()

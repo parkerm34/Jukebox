@@ -17,13 +17,13 @@ public class SongList implements TableModel {
 	
 	private void setUpDefaultList()
 	{
-		songs.add(new Song("Blue Ridge Mountain Mist", "Ralph Schuckett", 38));
-		songs.add(new Song("Determined Tumbao", "FreePlay Music", 20));
-		songs.add(new Song("Flute", "Sun Microsystems", 5));
-		songs.add(new Song("Space Music", "Unknown", 6));
-		songs.add(new Song("Swing Cheese", "FreePlay Music", 15));
-		songs.add(new Song("Tada", "Microsoft", 2));
-		songs.add(new Song("Untamable Fire", "Pierre Langer", 282));
+		songs.add(new Song("BlueRidgeMountainMist.mp3", "Blue Ridge Mountain Mist", "Ralph Schuckett", 38));
+		songs.add(new Song("DeterminedTumbao.mp3", "Determined Tumbao", "FreePlay Music", 20));
+		songs.add(new Song("flute.aif", "Flute", "Sun Microsystems", 5));
+		songs.add(new Song("spacemusic.au", "Space Music", "Unknown", 6));
+		songs.add(new Song("SwingCheese.mp3", "Swing Cheese", "FreePlay Music", 15));
+		songs.add(new Song("tada.wav", "Tada", "Microsoft", 2));
+		songs.add(new Song("UntameableFire.mp3", "Untamable Fire", "Pierre Langer", 282));
 	}
 
 	public ArrayList<Song> getList()
