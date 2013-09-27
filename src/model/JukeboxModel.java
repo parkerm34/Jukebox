@@ -1,9 +1,11 @@
 package model;
 
-/*Parker Mathewson Homer Glascock IV\
- * hi*/
+import view.JukeboxGUI;
 
-public class Jukebox
+/*Parker Mathewson Homer Glascock IV\
+ * hi */
+
+public class JukeboxModel
 {
 
 	private SongList songs;
@@ -11,14 +13,6 @@ public class Jukebox
 	private PlayList queued;
 	private Student currentUser;
 
-
-	public static void main(String[] args)
-	{
-		Jukebox theJukebox = new Jukebox();
-		theJukebox.initStudents();
-		theJukebox.initSongs();
-		
-	}
 
 	private void initStudents()
 	{
@@ -35,6 +29,11 @@ public class Jukebox
 
 	}
 	
+
+	public Student getCurrentUser() {
+		return currentUser;
+	}
+	
 	//returns true if login is sucessfull and false otherwise
 	public Boolean login(String id, String pass)
 	{
@@ -47,9 +46,9 @@ public class Jukebox
 		
 		return false;
 	}
-
-	public Student getCurrentUser() {
-		return currentUser;
-	}
 	
+	public void foo()
+	{
+		System.out.println("foo");
+	}
 }

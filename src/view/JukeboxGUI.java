@@ -17,23 +17,16 @@ import javax.swing.RowSorter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import model.Jukebox;
+import model.JukeboxModel;
 import model.SongList;
 
 public class JukeboxGUI extends JFrame
 {
 
-	public static void main(String[] args)
-	{
-		
-		String username = JOptionPane.showInputDialog("Please enter username");
-		String password = JOptionPane.showInputDialog("Please enter password for user " + username);
-
-		if (true) new JukeboxGUI().setVisible(true);
-	}
 
 	private TableModel songTableModel;
 	private JTable songTable;
+
 
 	public JukeboxGUI()
 	{
@@ -75,7 +68,7 @@ public class JukeboxGUI extends JFrame
 		public void actionPerformed(ActionEvent arg0)
 		{
 			int viewRow = songTable.getSelectedRow();
-
+			
 			if (viewRow < 0)
 				System.out.println("index " + viewRow + " means no row is selected");
 			else
