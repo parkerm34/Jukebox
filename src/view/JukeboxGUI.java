@@ -33,8 +33,8 @@ public class JukeboxGUI extends JFrame
 	private TableModel songTableModel;
 	private JTable songTable;
 	private PlayList queued = new PlayList();
-	private String[] displayQueue = new String[5];
-	private JList halp = new JList(displayQueue);
+	private static String[] displayQueue = new String[5];
+	private static JList halp = new JList(displayQueue);
 
 
 	public JukeboxGUI()
@@ -118,8 +118,24 @@ public class JukeboxGUI extends JFrame
 				
 				// plays song if this item is the only thing in the list
 				if(PlayList.songsQueued.size() == 1)
+				{
+					displayQueue[0] = "";
 					PlayList.playSong();
+				}
 			}
 		}
+	}
+	
+	public static void updateDisplayQueue()
+	{
+		int size = PlayList.songsQueued.size();
+		for(int x = 0; x < size; x ++)
+			displayQueue[x] = displayQueue[x+1];
+		
+		if(size != 0)
+			for(int x = size-1; x < 5; x++)
+				displayQueue[x] = "";
+		
+		halp.setListData(displayQueue);
 	}
 }

@@ -9,6 +9,7 @@ import java.util.Queue;
 import songplayer.EndOfSongEvent;
 import songplayer.EndOfSongListener;
 import songplayer.SongPlayer;
+import view.JukeboxGUI;
 
 public class PlayList
 {
@@ -68,6 +69,7 @@ public class PlayList
 					+ finishedAt.get(Calendar.MINUTE) + ":"
 					+ finishedAt.get(Calendar.SECOND));
 			
+			JukeboxGUI.updateDisplayQueue();
 			// plays songs when the queue has more than 1 item
 			playSong();
 		}
