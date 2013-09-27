@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
 import javax.swing.table.TableModel;
@@ -64,25 +65,27 @@ public class JukeboxGUI extends JFrame
 
 		add(scrollPane, BorderLayout.CENTER);
 
+		JPanel panel2 = new JPanel();
 		JButton songSelect = new JButton("Queue Song");
+		panel2.add(songSelect);
+		add(panel2, BorderLayout.NORTH);
+		songSelect.addActionListener(new ButtonListener());		
+
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(16, 1, 5, 5));
-		panel.add(songSelect);
+		panel.setLayout(new GridLayout(5, 1, 5, 5));
 		
-		// Adds blank space to look nice between the queue button and queue list
-		panel.add(Box.createRigidArea(new Dimension(50, 0)));
-		panel.add(Box.createRigidArea(new Dimension(50, 0)));
-		panel.add(Box.createRigidArea(new Dimension(50, 0)));
-		panel.add(Box.createRigidArea(new Dimension(50, 0)));
+
 		
-		JLabel queueLabel = new JLabel("Up next...", JLabel.CENTER);
+		JLabel queueLabel = new JLabel("  Up next...  ", JLabel.CENTER);
 		panel.add(queueLabel);
+		queueLabel.setVerticalAlignment(JLabel.BOTTOM);
+		queueLabel.setVerticalTextPosition(JLabel.BOTTOM);
 		
-			
 		
 		panel.add(halp);
+		panel.setSize(new Dimension(100, 500));
+		halp.setBackground(Color.lightGray);
 		add(panel, BorderLayout.WEST);
-		songSelect.addActionListener(new ButtonListener());		
 
 	}
 
