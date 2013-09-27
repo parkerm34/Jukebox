@@ -14,7 +14,7 @@ public class JukeboxModel
 	private Student currentUser;
 
 
-	private void initStudents()
+	public void initStudents()
 	{
 		students = new StudentList();
 		students.addStudent(new Student("Ali","1111"));
@@ -24,7 +24,7 @@ public class JukeboxModel
 		students.addStudent(new Student("asdf", "asdf"));
 	}
 
-	private void initSongs()
+	public void initSongs()
 	{
 
 	}
@@ -37,7 +37,9 @@ public class JukeboxModel
 	//returns true if login is sucessfull and false otherwise
 	public Boolean login(String id, String pass)
 	{
-		currentUser = students.isValidLogin(id, pass);
+		currentUser = students.isValidLogin(id, pass);	
+		
+
 		
 		if(currentUser != null)
 		{
