@@ -27,7 +27,7 @@ public class LoginGUI extends JFrame
 		setTitle("UA Student Jukebox Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		this.setSize(300, 125);
+		this.setSize(300, 140);
 		this.setLocationRelativeTo(null);
 
 		nameField.setPreferredSize(new Dimension(150, 20));
