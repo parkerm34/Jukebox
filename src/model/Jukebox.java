@@ -9,6 +9,8 @@ public class Jukebox
 	private SongList songs;
 	private StudentList students;
 	private PlayList queued;
+	private Student currentUser;
+
 
 	public static void main(String[] args)
 	{
@@ -25,10 +27,29 @@ public class Jukebox
 		students.addStudent(new Student("Chris","2222" ));
 		students.addStudent(new Student("River","3333" ));
 		students.addStudent(new Student("Ryan","4444" ));
+		students.addStudent(new Student("asdf", "asdf"));
 	}
 
 	private void initSongs()
 	{
 
 	}
+	
+	//returns true if login is sucessfull and false otherwise
+	public Boolean login(String id, String pass)
+	{
+		currentUser = students.isValidLogin(id, pass);
+		
+		if(currentUser != null)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+
+	public Student getCurrentUser() {
+		return currentUser;
+	}
+	
 }

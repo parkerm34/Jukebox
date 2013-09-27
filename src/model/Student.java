@@ -13,7 +13,7 @@ public class Student
 
 	public Student(String id, String password)
 	{
-		this.id = id;
+		this.setId(id);
 		this.password = password;
 	}
 
@@ -33,16 +33,6 @@ public class Student
 	/*******************************************************************************************/
 	/* SETTERS AND GETTERS FOR CLASS Student												   */
 	/*******************************************************************************************/
-	
-	public String getName()
-	{
-		return id;
-	}
-
-	public void setName(String name)
-	{
-		this.id = name;
-	}
 
 	public int getTimeLeft()
 	{
@@ -82,6 +72,14 @@ public class Student
 	public void setPassword(String password)
 	{
 		this.password = password;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }
