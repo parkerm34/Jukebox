@@ -15,6 +15,11 @@ public class SongList implements TableModel {
 		setUpDefaultList();
 	}
 	
+	public SongList(int x)
+	{
+		
+	}
+	
 	private void setUpDefaultList()
 	{
 		songs.add(new Song("Blue Ridge Mountain Mist", "Ralph Schuckett", 38));
@@ -26,6 +31,11 @@ public class SongList implements TableModel {
 		songs.add(new Song("Untamable Fire", "Pierre Langer", 282));
 	}
 
+	public ArrayList<Song> getList()
+	{
+		return songs;
+	}
+	
 	@Override
 	public void addTableModelListener(TableModelListener l) {
 		// TODO Auto-generated method stub

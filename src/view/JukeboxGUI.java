@@ -18,15 +18,16 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import model.JukeboxModel;
+import model.PlayList;
 import model.SongList;
 
 public class JukeboxGUI extends JFrame
 {
 
-
+	private SongList songList;
 	private TableModel songTableModel;
 	private JTable songTable;
-
+	private PlayList queued = new PlayList();
 
 	public JukeboxGUI()
 	{
@@ -43,7 +44,8 @@ public class JukeboxGUI extends JFrame
 		this.setSize(700, 500);
 		this.setLocation(200, 200);
 
-		songTableModel = new SongList();
+		songList = new SongList();
+		songTableModel = songList;
 		songTable = new JTable(songTableModel);
 		songTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -78,6 +80,9 @@ public class JukeboxGUI extends JFrame
 						+ songTableModel.getValueAt(modelRow, 0) + "'");
 //				 + songTable.getValueAt(songTable.getSelectedRow(),songTable.convertColumnIndexToModel(0))+"'");
 //				this is another way to so it
+				
+				queued.songsQueued.add(queued.find(songTableModel.getValueAt(modelRow, 0).toString()));
+				System.out.println(queued.songsQueued.pop().getSongName());
 			}
 		}
 	}
