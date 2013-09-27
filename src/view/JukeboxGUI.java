@@ -3,11 +3,15 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -28,6 +32,9 @@ public class JukeboxGUI extends JFrame
 	private TableModel songTableModel;
 	private JTable songTable;
 	private PlayList queued = new PlayList();
+	private String[] displayQueue = new String[5];
+	private JList halp = new JList(displayQueue);
+
 
 	public JukeboxGUI()
 	{
@@ -59,9 +66,24 @@ public class JukeboxGUI extends JFrame
 
 		JButton songSelect = new JButton("Queue Song");
 		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(16, 1, 5, 5));
 		panel.add(songSelect);
+		
+		// Adds blank space to look nice between the queue button and queue list
+		panel.add(Box.createRigidArea(new Dimension(50, 0)));
+		panel.add(Box.createRigidArea(new Dimension(50, 0)));
+		panel.add(Box.createRigidArea(new Dimension(50, 0)));
+		panel.add(Box.createRigidArea(new Dimension(50, 0)));
+		
+		JLabel queueLabel = new JLabel("Up next...", JLabel.CENTER);
+		panel.add(queueLabel);
+		
+			
+		
+		panel.add(halp);
 		add(panel, BorderLayout.WEST);
-		songSelect.addActionListener(new ButtonListener());
+		songSelect.addActionListener(new ButtonListener());		
+
 	}
 
 	private class ButtonListener implements ActionListener
@@ -82,14 +104,18 @@ public class JukeboxGUI extends JFrame
 //				this is another way to so it
 				
 				// Adds song to queue
-				queued.songsQueued.add(queued.find(songTableModel.getValueAt(modelRow, 0).toString()));
+				PlayList.songsQueued.add(queued.find(songTableModel.getValueAt(modelRow, 0).toString()));
+				
+				displayQueue[PlayList.songsQueued.size()-1] = songTableModel.getValueAt(modelRow, 0).toString();
+				System.out.println(displayQueue[PlayList.songsQueued.size()-1]);
+				halp.setListData(displayQueue);
 				
 				//testing for printing the song name
-				System.out.println(queued.songsQueued.peek().getSongName());
+				System.out.println(PlayList.songsQueued.peek().getSongName());
 				
 				// plays song if this item is the only thing in the list
-				if(queued.songsQueued.size() == 1)
-					queued.playSong();
+				if(PlayList.songsQueued.size() == 1)
+					PlayList.playSong();
 			}
 		}
 	}
