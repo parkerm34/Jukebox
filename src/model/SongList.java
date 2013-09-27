@@ -17,6 +17,7 @@ public class SongList implements TableModel {
 	
 	private void setUpDefaultList()
 	{
+							// filename, song name, artist name, time (in seconds)
 		songs.add(new Song("BlueRidgeMountainMist.mp3", "Blue Ridge Mountain Mist", "Ralph Schuckett", 38));
 		songs.add(new Song("DeterminedTumbao.mp3", "Determined Tumbao", "FreePlay Music", 20));
 		songs.add(new Song("flute.aif", "Flute", "Sun Microsystems", 5));

@@ -81,8 +81,13 @@ public class JukeboxGUI extends JFrame
 //				 + songTable.getValueAt(songTable.getSelectedRow(),songTable.convertColumnIndexToModel(0))+"'");
 //				this is another way to so it
 				
+				// Adds song to queue
 				queued.songsQueued.add(queued.find(songTableModel.getValueAt(modelRow, 0).toString()));
+				
+				//testing for printing the song name
 				System.out.println(queued.songsQueued.peek().getSongName());
+				
+				// plays song if this item is the only thing in the list
 				if(queued.songsQueued.size() == 1)
 					queued.playSong();
 			}
