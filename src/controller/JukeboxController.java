@@ -15,7 +15,7 @@ public class JukeboxController implements Serializable
 {
 
 	private JukeboxModel theModel = new JukeboxModel();
-	private JukeboxGUI theGUI = new JukeboxGUI(this);
+	private JukeboxGUI theGUI = new JukeboxGUI(this, this.theModel);
 	private LoginGUI loginWindow = new LoginGUI();
 	
 	public static void main(String args[])
@@ -25,11 +25,8 @@ public class JukeboxController implements Serializable
 
 	public JukeboxController()
 	{
-		theModel.initStudents();
-
 		loginWindow.addButtonActionListener(new ButtonListener());
 
-//		theGUI.setVisible(true);
 		loginWindow.setVisible(true);
 	}
 	
@@ -39,6 +36,8 @@ public class JukeboxController implements Serializable
 		loginWindow.addButtonActionListener(new ButtonListener());
 
 		loginWindow.setVisible(true);
+		
+		System.out.println(theModel.students.getStudents().get(4).getTimeLeft());
 	}
 	
 	private void login(String username, String password)

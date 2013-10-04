@@ -1,9 +1,6 @@
 package model;
 
-import view.JukeboxGUI;
-
 import java.io.Serializable;
-import java.util.GregorianCalendar;
 
 /*Parker Mathewson Homer Glascock IV\
  * hi */
@@ -11,26 +8,9 @@ import java.util.GregorianCalendar;
 public class JukeboxModel implements Serializable
 {
 
-	private SongList songs;
-	private StudentList students;
-	private PlayList queued;
+	public SongList songs = new SongList();
+	public StudentList students = new StudentList();
 	private Student currentUser;
-
-
-	public void initStudents()
-	{
-		students = new StudentList();
-		students.addStudent(new Student("Ali","1111"));
-		students.addStudent(new Student("Chris","2222" ));
-		students.addStudent(new Student("River","3333" ));
-		students.addStudent(new Student("Ryan","4444" ));
-		students.addStudent(new Student("asdf", "asdf"));
-	}
-
-	public void initSongs()
-	{
-
-	}
 	
 
 	public Student getCurrentUser() {
@@ -52,8 +32,4 @@ public class JukeboxModel implements Serializable
 		return false;
 	}
 	
-	public void foo()
-	{
-		System.out.println("foo");
-	}
 }

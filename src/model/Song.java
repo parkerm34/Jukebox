@@ -1,6 +1,9 @@
 package model;
 
-public class Song {
+import java.io.Serializable;
+
+public class Song implements Serializable
+{
 
 	private String songExt;
 	private String songName;

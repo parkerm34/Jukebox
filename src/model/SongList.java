@@ -1,12 +1,13 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-public class SongList implements TableModel {
+public class SongList implements TableModel, Serializable {
 
 	private ArrayList<Song> songs = new ArrayList<Song>();
 	

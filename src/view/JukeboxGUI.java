@@ -9,9 +9,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.swing.JButton;
@@ -30,6 +33,8 @@ import javax.swing.table.TableRowSorter;
 
 import controller.JukeboxController;
 
+import model.JukeboxModel;
+import model.LimitedQueue;
 import model.PlayList;
 import model.Song;
 import model.SongList;
@@ -46,20 +51,25 @@ public class JukeboxGUI extends JFrame
 	private static String[] displayQueue = new String[5];
 	private static JList halp = new JList(displayQueue);
 	private Student currentUser;
+	
+	
 	private JTextArea userTextArea = new JTextArea();
 	private JTextArea timeTextArea = new JTextArea();
 	private JTextArea songsTextArea = new JTextArea();
 	private JButton songSelect = new JButton("Queue Song");
 	private JButton logoutButton = new JButton("logout");
 	private JukeboxController controller;
+	private JukeboxModel model;
 	
 	public static String baseDir = System.getProperty("user.dir") + File.separator + "SerializedObjects" + File.separator;
 
-    public static final String FILE_NAME_WHERE_ACCOUNTS_ARE_STORED = baseDir + "jukeboxCollection.object";
+    public static final String FILE_NAME_WHERE_JUKEBOX_STORED = baseDir + "jukeboxCollection.object";
+    public static final String FILE_NAME_WHERE_PLAYLIST_STORED = baseDir + "playlistCollection.object";
 
 
-	public JukeboxGUI(JukeboxController helper)
+	public JukeboxGUI(JukeboxController helper, JukeboxModel model)
 	{
+		this.model = model;
 		this.controller = helper;
 		layoutGUI();
 	}
@@ -143,23 +153,26 @@ public class JukeboxGUI extends JFrame
 			
 			int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_CANCEL_OPTION);
 	        if (reply == JOptionPane.YES_OPTION) {
-	        	/*String fileName = "onelist";
-	        	ArrayList<String> list = new ArrayList<String>();
-	        	list.add("A");
-	        	list.add("B");
-	        	list.add("C");*/
 	        	try {
-	        		String hey = "hey";
-		        	FileOutputStream stream = new FileOutputStream(FILE_NAME_WHERE_ACCOUNTS_ARE_STORED);
+		        	FileOutputStream stream = new FileOutputStream(FILE_NAME_WHERE_JUKEBOX_STORED);
 		        	ObjectOutputStream outFile = new ObjectOutputStream(stream);
 		        	// outFile understands the writeObject message.
 		        	// Make the object persist so it can be read later.
-		        	outFile.writeObject(hey);
+		        	outFile.writeObject(model);
 		        	outFile.close(); // Always close the output file!
+		        	
+		        	stream = new FileOutputStream(FILE_NAME_WHERE_PLAYLIST_STORED);
+		            outFile = new ObjectOutputStream(stream);
+		            outFile.writeObject(halp);
+		            outFile.writeObject(queued.songsQueued);
+		            outFile.writeObject(displayQueue);
+		            // Do NOT forget to close the output stream!
+		            outFile.close();
+		          
+		            
 	        	} catch (IOException ioe) {
 	        		System.out.println("Writing objects failed");
 	        	}
-	        	//JOptionPane.showMessageDialog(null, "Current State Saved");
 	        	System.exit(0);
 	        }
 	        
@@ -174,30 +187,25 @@ public class JukeboxGUI extends JFrame
 		
 		@Override
 		public void windowActivated(WindowEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void windowClosed(WindowEvent e) {
-			// TODO Auto-generated method stub
 		}
 
 		@Override
 		public void windowDeactivated(WindowEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void windowDeiconified(WindowEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void windowIconified(WindowEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 
@@ -207,7 +215,44 @@ public class JukeboxGUI extends JFrame
 			String title = "Opening Jukebox Session";
 			
 			int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
-	        if (reply == JOptionPane.YES_OPTION) {
+	        if (reply == JOptionPane.YES_OPTION)
+	        {
+	        	try
+	        	{
+	                // Read the model object from its disk file
+	                FileInputStream inFile = new FileInputStream(FILE_NAME_WHERE_JUKEBOX_STORED);
+	                ObjectInputStream inputStream = new ObjectInputStream(inFile);
+	                model = (JukeboxModel) inputStream.readObject();
+	                inputStream.close();
+	                
+	                setCurrentUser(currentUser.getId());
+
+	                // Use the same stream objects to read the other disk file
+	                inFile = new FileInputStream(FILE_NAME_WHERE_PLAYLIST_STORED);
+	                inputStream = new ObjectInputStream(inFile);
+	                halp = (JList) inputStream.readObject();
+	                queued.songsQueued = (LimitedQueue<Song>) inputStream.readObject();
+	                displayQueue = (String[]) inputStream.readObject();
+	                inputStream.close();
+	                
+	                System.out.println(displayQueue[0]);
+	                System.out.println(displayQueue[1]);
+	                System.out.println(queued.songsQueued.get(0).getSongName());
+	                
+//	                updateDisplayQueue();
+	                halp.setListData(displayQueue);
+	                
+	                // TODO Set displayQueue to display the queue on the left sidebar
+	                // Should be stored in halp. Cant figure it out.
+	                
+	                PlayList.playSong();
+	        	}
+	        	catch (Exception exep)
+	        	{
+	                String errorMes = "Error reading serialzed objects\n";
+	                errorMes += "Run tests.InitializeAccountAndTransactionCollections";
+	                JOptionPane.showMessageDialog(null, message);
+	        	}
 	          JOptionPane.showMessageDialog(null, "Starting on previously saved state");
 	        }
 	        
@@ -235,49 +280,38 @@ public class JukeboxGUI extends JFrame
 						int modelRow = songTable.convertRowIndexToModel(viewRow);
 						System.out.println("index " + viewRow + " has the name '"
 								+ songTableModel.getValueAt(modelRow, 0) + "'");
-//					 	+ songTable.getValueAt(songTable.getSelectedRow(),songTable.convertColumnIndexToModel(0))+"'");
-//						this is another way to so it
 					
-						Song temp = queued.find(songTableModel.getValueAt(modelRow, 0).toString());
-						Student student = queued.findStudent(LoginGUI.getUsername(), studentList);
-//						System.out.println(student);
+						int songIndex = queued.find(songTableModel.getValueAt(modelRow,  0).toString());
+						int studentIndex = queued.findStudent(LoginGUI.getUsername(), studentList);
 				
 				
 						// Adds song to queue
-						if(temp.allowedToPlay() && student.allowedToPlay())
+						if(model.songs.getList().get(songIndex).allowedToPlay() && model.students.getStudents().get(studentIndex).allowedToPlay())
 						{
 					
 							// increments daycount after the song is added
-							if(PlayList.songsQueued.add(temp))
+							if(PlayList.songsQueued.add(model.songs.getList().get(songIndex)))
 							{
-								temp.setDayCount(temp.getDayCount() + 1);
-								student.setDayCount(student.getDayCount() + 1);
-								//TODO: SUBTRACT TIME!
-								student.subtractFromTimeLeft(temp.getSongTime());
-								System.out.println(student.getTimeLeft());
-//								System.out.println(student.getId());
+								model.songs.getList().get(songIndex).setDayCount(model.songs.getList().get(songIndex).getDayCount() + 1);
+								model.students.getStudents().get(studentIndex).setDayCount(model.students.getStudents().get(studentIndex).getDayCount() + 1);
+								model.students.getStudents().get(studentIndex).subtractFromTimeLeft(model.songs.getList().get(songIndex).getSongTime());
+								System.out.println(model.students.getStudents().get(studentIndex).getTimeLeft());
 							}
 				
-							displayQueue[PlayList.songsQueued.size()-1] = temp.getSongName();
+							displayQueue[PlayList.songsQueued.size()-1] = model.songs.getList().get(songIndex).getSongName();
 							System.out.println(displayQueue[PlayList.songsQueued.size()-1]);
 							halp.setListData(displayQueue);
 				
-							//testing for printing the song name
-//							System.out.println(PlayList.songsQueued.peek().getSongName());
-							
 							// plays song if this item is the only thing in the list
 							if(PlayList.songsQueued.size() == 1)
 							{
-								// Would take away current song playing on displayed playlist
-//								displayQueue[0] = "";
-							
 								PlayList.playSong();
 								halp.setListData(displayQueue);
 							}
 							setCurrentUser(currentUser.getId());
 
 						}
-						else if( !temp.allowedToPlay() && student.allowedToPlay() )
+						else if( !model.songs.getList().get(songIndex).allowedToPlay() && model.students.getStudents().get(studentIndex).allowedToPlay() )
 						{
 							JOptionPane cannotPlay = new JOptionPane();
 							cannotPlay.showMessageDialog(null, "This song has reached it's maximum plays for today");
@@ -324,10 +358,10 @@ public class JukeboxGUI extends JFrame
 	{
 		if(loggedIn != null)
 		{
-			this.currentUser = queued.findStudent(loggedIn, studentList);
-			this.userTextArea.setText(this.currentUser.getId());
-			this.timeTextArea.setText(this.currentUser.getTimeString());
-			this.songsTextArea.setText("" + (2 - this.currentUser.getDayCount()));
+			this.currentUser = model.students.getStudents().get(queued.findStudent(loggedIn, studentList));
+			this.userTextArea.setText(model.students.getStudents().get(queued.findStudent(loggedIn, studentList)).getId());
+			this.timeTextArea.setText(model.students.getStudents().get(queued.findStudent(loggedIn, studentList)).getTimeString());
+			this.songsTextArea.setText("" + (2 - model.students.getStudents().get(queued.findStudent(loggedIn, studentList)).getDayCount()));
 		}
 		else
 		{

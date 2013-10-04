@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -11,13 +12,12 @@ import songplayer.EndOfSongListener;
 import songplayer.SongPlayer;
 import view.JukeboxGUI;
 
-public class PlayList
+public class PlayList implements Serializable
 {
 	public static LimitedQueue<Song> songsQueued = new LimitedQueue<Song>(5);
 	private SongList fullList = new SongList();
 	private ArrayList<Song> help = new ArrayList<Song>();
 	private StudentList students = new StudentList();
-	private ArrayList<Student> studentHelper = new ArrayList<Student>();
 	private static ObjectWaitingForSongToEnd waiter = new ObjectWaitingForSongToEnd();
 
 	/*
@@ -31,28 +31,28 @@ public class PlayList
 	 * 
 	 * OUTPUT: Song object
 	 */
-	public Song find(String songName)
+	public int find(String songName)
 	{
 		help = fullList.getList();
 		for(int x = 0; x < help.size(); x++)
 			if(help.get(x).getSongName() == songName)
-				return help.get(x);
+				return x;
 		
-		return null;	
+		return -1;	
 	}
 	
-	public Student findStudent(String studentName, StudentList list)
+	public int findStudent(String studentName, StudentList list)
 	{
 		StudentList rawr = new StudentList();
-		studentHelper = students.getStudents();
+		students.getStudents();
 		for(int x = 0; x < rawr.getStudents().size(); x++)
 		{
 			if(rawr.getStudents().get(x).getId().compareTo(studentName) == 0)
 			{
-				return studentHelper.get(x);
+				return x;
 			}
 		}
-		return null;
+		return -1;
 	}
 	
 	/*
