@@ -14,7 +14,7 @@ public class JukeboxController
 {
 
 	private JukeboxModel theModel = new JukeboxModel();
-	private JukeboxGUI theGUI = new JukeboxGUI();
+	private JukeboxGUI theGUI = new JukeboxGUI(this);
 	private LoginGUI loginWindow = new LoginGUI();
 	
 	public static void main(String args[])
@@ -32,7 +32,15 @@ public class JukeboxController
 		loginWindow.setVisible(true);
 	}
 	
-	private void login()
+	public void reLogin()
+	{
+		loginWindow = new LoginGUI();
+		loginWindow.addButtonActionListener(new ButtonListener());
+
+		loginWindow.setVisible(true);
+	}
+	
+	private void login(String username, String password)
 	{
 		if(theModel.login(loginWindow.getUsername(), loginWindow.getPassword()))
 		{
@@ -54,7 +62,7 @@ public class JukeboxController
 		{
 			if(e.getActionCommand().equals("login"))
 			{
-				login();
+				login(loginWindow.getUsername(), loginWindow.getPassword());
 			}
 		}
 	}

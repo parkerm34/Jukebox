@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.GregorianCalendar;
 
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,7 +22,8 @@ import javax.swing.RowSorter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import model.JukeboxModel;
+import controller.JukeboxController;
+
 import model.PlayList;
 import model.Song;
 import model.SongList;
@@ -40,13 +40,18 @@ public class JukeboxGUI extends JFrame
 	private PlayList queued = new PlayList();
 	private static String[] displayQueue = new String[5];
 	private static JList halp = new JList(displayQueue);
-	private static Student currentUser;
+	private Student currentUser;
 	private JTextArea userTextArea = new JTextArea();
 	private JTextArea timeTextArea = new JTextArea();
 	private JTextArea songsTextArea = new JTextArea();
+	private JButton songSelect = new JButton("Queue Song");
+	private JButton logoutButton = new JButton("logout");
+	private JukeboxController controller;
 
-	public JukeboxGUI()
+
+	public JukeboxGUI(JukeboxController helper)
 	{
+		this.controller = helper;
 		layoutGUI();
 	}
 
@@ -74,7 +79,6 @@ public class JukeboxGUI extends JFrame
 		add(scrollPane, BorderLayout.CENTER);
 
 		JPanel panel2 = new JPanel();
-		JButton songSelect = new JButton("Queue Song");
 		panel2.add(songSelect);
 		add(panel2, BorderLayout.NORTH);
 		songSelect.addActionListener(new ButtonListener());		
@@ -114,6 +118,9 @@ public class JukeboxGUI extends JFrame
 		songsTextArea.setText("Not logged in");
 		panel3.add(songsTextArea);
 		
+		panel3.add(logoutButton);
+		logoutButton.addActionListener(new ButtonListener());				
+		
 		add(panel3, BorderLayout.SOUTH);
 	}
 
@@ -122,67 +129,84 @@ public class JukeboxGUI extends JFrame
 		@Override
 		public void actionPerformed(ActionEvent arg0)
 		{
-			int viewRow = songTable.getSelectedRow();
-			
-			if (viewRow < 0)
-				System.out.println("index " + viewRow + " means no row is selected");
-			else
+			if(arg0.getSource() == songSelect)
 			{
-				int modelRow = songTable.convertRowIndexToModel(viewRow);
-				System.out.println("index " + viewRow + " has the name '"
-						+ songTableModel.getValueAt(modelRow, 0) + "'");
-//				 + songTable.getValueAt(songTable.getSelectedRow(),songTable.convertColumnIndexToModel(0))+"'");
-//				this is another way to so it
-				
-				Song temp = queued.find(songTableModel.getValueAt(modelRow, 0).toString());
-				Student student = queued.findStudent(LoginGUI.getUsername(), studentList);
-//				System.out.println(student);
-				
-				
-				// Adds song to queue
-				if(temp.allowedToPlay() && student.allowedToPlay())
+				if(currentUser != null)
 				{
+					int viewRow = songTable.getSelectedRow();
+				
+					if (viewRow < 0)
+						System.out.println("index " + viewRow + " means no row is selected");
+					else
+					{
+						int modelRow = songTable.convertRowIndexToModel(viewRow);
+						System.out.println("index " + viewRow + " has the name '"
+								+ songTableModel.getValueAt(modelRow, 0) + "'");
+//					 	+ songTable.getValueAt(songTable.getSelectedRow(),songTable.convertColumnIndexToModel(0))+"'");
+//						this is another way to so it
 					
-					// increments daycount after the song is added
-					if(PlayList.songsQueued.add(temp))
-					{
-						temp.setDayCount(temp.getDayCount() + 1);
-						student.setDayCount(student.getDayCount() + 1);
-						//TODO: SUBTRACT TIME!
-						student.subtractFromTimeLeft(temp.getSongTime());
-						System.out.println(student.getTimeLeft());
-//						System.out.println(student.getId());
-					}
+						Song temp = queued.find(songTableModel.getValueAt(modelRow, 0).toString());
+						Student student = queued.findStudent(LoginGUI.getUsername(), studentList);
+//						System.out.println(student);
 				
-					displayQueue[PlayList.songsQueued.size()-1] = temp.getSongName();
-					System.out.println(displayQueue[PlayList.songsQueued.size()-1]);
-					halp.setListData(displayQueue);
 				
-					//testing for printing the song name
-//					System.out.println(PlayList.songsQueued.peek().getSongName());
+						// Adds song to queue
+						if(temp.allowedToPlay() && student.allowedToPlay())
+						{
+					
+							// increments daycount after the song is added
+							if(PlayList.songsQueued.add(temp))
+							{
+								temp.setDayCount(temp.getDayCount() + 1);
+								student.setDayCount(student.getDayCount() + 1);
+								//TODO: SUBTRACT TIME!
+								student.subtractFromTimeLeft(temp.getSongTime());
+								System.out.println(student.getTimeLeft());
+//								System.out.println(student.getId());
+							}
 				
-					// plays song if this item is the only thing in the list
-					if(PlayList.songsQueued.size() == 1)
-					{
-						// Would take away current song playing on displayed playlist
-//						displayQueue[0] = "";
+							displayQueue[PlayList.songsQueued.size()-1] = temp.getSongName();
+							System.out.println(displayQueue[PlayList.songsQueued.size()-1]);
+							halp.setListData(displayQueue);
+				
+							//testing for printing the song name
+//							System.out.println(PlayList.songsQueued.peek().getSongName());
+							
+							// plays song if this item is the only thing in the list
+							if(PlayList.songsQueued.size() == 1)
+							{
+								// Would take away current song playing on displayed playlist
+//								displayQueue[0] = "";
+							
+								PlayList.playSong();
+								halp.setListData(displayQueue);
+							}
+							setCurrentUser(currentUser.getId());
 
-						PlayList.playSong();
-						halp.setListData(displayQueue);
+						}
+						else if( !temp.allowedToPlay() && student.allowedToPlay() )
+						{
+							JOptionPane cannotPlay = new JOptionPane();
+							cannotPlay.showMessageDialog(null, "This song has reached it's maximum plays for today");
+						}
+						else
+						{
+							JOptionPane cannotPlay = new JOptionPane();
+							cannotPlay.showMessageDialog(null, "You have reached your maximum plays for today");					
+						}
 					}
-					setCurrentUser(currentUser.getId());
-
-				}
-				else if( !temp.allowedToPlay() && student.allowedToPlay() )
-				{
-					JOptionPane cannotPlay = new JOptionPane();
-					cannotPlay.showMessageDialog(null, "This song has reached it's maximum plays for today");
 				}
 				else
 				{
-					JOptionPane cannotPlay = new JOptionPane();
-					cannotPlay.showMessageDialog(null, "You have reached your maximum plays for today");					
+					JOptionPane notLoggedIn = new JOptionPane();
+					notLoggedIn.showMessageDialog(null, "Please login first");
 				}
+			}
+			else
+			{
+				setCurrentUser(null);
+				controller.reLogin();
+				System.out.println("hi");
 			}
 		}
 	}
@@ -205,9 +229,19 @@ public class JukeboxGUI extends JFrame
 	
 	public void setCurrentUser(String loggedIn)
 	{
-		this.currentUser = queued.findStudent(loggedIn, studentList);
-		this.userTextArea.setText(this.currentUser.getId());
-		this.timeTextArea.setText(this.currentUser.getTimeString());
-		this.songsTextArea.setText("" + (2 - this.currentUser.getDayCount()));
+		if(loggedIn != null)
+		{
+			this.currentUser = queued.findStudent(loggedIn, studentList);
+			this.userTextArea.setText(this.currentUser.getId());
+			this.timeTextArea.setText(this.currentUser.getTimeString());
+			this.songsTextArea.setText("" + (2 - this.currentUser.getDayCount()));
+		}
+		else
+		{
+			this.currentUser = null;
+			this.userTextArea.setText("Not logged in");
+			this.timeTextArea.setText("Not logged in");
+			this.songsTextArea.setText("Not logged in");
+		}
 	}
 }
