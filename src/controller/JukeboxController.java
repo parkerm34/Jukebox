@@ -2,6 +2,7 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 
 import model.JukeboxModel;
 import view.JukeboxGUI;
@@ -10,7 +11,7 @@ import view.LoginGUI;
 /*Parker Mathewson Homer Glascock IV\
  * hi have a look at this http://www.cs.wcupa.edu/~rkline/java/mvc-design.html*/
 
-public class JukeboxController
+public class JukeboxController implements Serializable
 {
 
 	private JukeboxModel theModel = new JukeboxModel();

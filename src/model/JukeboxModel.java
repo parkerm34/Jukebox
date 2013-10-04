@@ -1,12 +1,14 @@
 package model;
 
 import view.JukeboxGUI;
+
+import java.io.Serializable;
 import java.util.GregorianCalendar;
 
 /*Parker Mathewson Homer Glascock IV\
  * hi */
 
-public class JukeboxModel
+public class JukeboxModel implements Serializable
 {
 
 	private SongList songs;

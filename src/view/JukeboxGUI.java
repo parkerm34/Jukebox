@@ -8,6 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.GregorianCalendar;
 
 import javax.swing.JButton;
@@ -34,7 +38,6 @@ import model.StudentList;
 
 public class JukeboxGUI extends JFrame
 {
-
 	private SongList songList;
 	private StudentList studentList;
 	private TableModel songTableModel;
@@ -49,6 +52,10 @@ public class JukeboxGUI extends JFrame
 	private JButton songSelect = new JButton("Queue Song");
 	private JButton logoutButton = new JButton("logout");
 	private JukeboxController controller;
+	
+	public static String baseDir = System.getProperty("user.dir") + File.separator + "SerializedObjects" + File.separator;
+
+    public static final String FILE_NAME_WHERE_ACCOUNTS_ARE_STORED = baseDir + "jukeboxCollection.object";
 
 
 	public JukeboxGUI(JukeboxController helper)
@@ -62,7 +69,7 @@ public class JukeboxGUI extends JFrame
 		addWindowListener(new CloseListener());
 		
 		setTitle("University of Arizona Student Jukebox");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		// setBackground(Color.BLUE);
 
@@ -136,15 +143,33 @@ public class JukeboxGUI extends JFrame
 			
 			int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_CANCEL_OPTION);
 	        if (reply == JOptionPane.YES_OPTION) {
-	          JOptionPane.showMessageDialog(null, "Current State Saved");
-	          System.exit(0);
+	        	/*String fileName = "onelist";
+	        	ArrayList<String> list = new ArrayList<String>();
+	        	list.add("A");
+	        	list.add("B");
+	        	list.add("C");*/
+	        	try {
+	        		String hey = "hey";
+		        	FileOutputStream stream = new FileOutputStream(FILE_NAME_WHERE_ACCOUNTS_ARE_STORED);
+		        	ObjectOutputStream outFile = new ObjectOutputStream(stream);
+		        	// outFile understands the writeObject message.
+		        	// Make the object persist so it can be read later.
+		        	outFile.writeObject(hey);
+		        	outFile.close(); // Always close the output file!
+	        	} catch (IOException ioe) {
+	        		System.out.println("Writing objects failed");
+	        	}
+	        	//JOptionPane.showMessageDialog(null, "Current State Saved");
+	        	System.exit(0);
 	        }
 	        
 	        else if(reply == JOptionPane.NO_OPTION) {
-	           JOptionPane.showMessageDialog(null, "Current State Erased");
-	           System.exit(0);
+	        	JOptionPane.showMessageDialog(null, "Current State Erased");
+	        	System.exit(0);
 	        }
-	        else {}
+	        else {
+	        	System.out.println("da fuq");
+	        }
 		}
 		
 		@Override
