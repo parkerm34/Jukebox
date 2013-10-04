@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.GregorianCalendar;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -24,12 +25,16 @@ import javax.swing.table.TableRowSorter;
 
 import model.JukeboxModel;
 import model.PlayList;
+import model.Song;
 import model.SongList;
+import model.Student;
+import model.StudentList;
 
 public class JukeboxGUI extends JFrame
 {
 
 	private SongList songList;
+	private StudentList studentList;
 	private TableModel songTableModel;
 	private JTable songTable;
 	private PlayList queued = new PlayList();
@@ -106,21 +111,48 @@ public class JukeboxGUI extends JFrame
 //				 + songTable.getValueAt(songTable.getSelectedRow(),songTable.convertColumnIndexToModel(0))+"'");
 //				this is another way to so it
 				
+				Song temp = queued.find(songTableModel.getValueAt(modelRow, 0).toString());
+				Student student = queued.findStudent(LoginGUI.getUsername(), studentList);
+//				System.out.println(student);
+				
+				
 				// Adds song to queue
-				PlayList.songsQueued.add(queued.find(songTableModel.getValueAt(modelRow, 0).toString()));
-				
-				displayQueue[PlayList.songsQueued.size()-1] = songTableModel.getValueAt(modelRow, 0).toString();
-				System.out.println(displayQueue[PlayList.songsQueued.size()-1]);
-				halp.setListData(displayQueue);
-				
-				//testing for printing the song name
-				System.out.println(PlayList.songsQueued.peek().getSongName());
-				
-				// plays song if this item is the only thing in the list
-				if(PlayList.songsQueued.size() == 1)
+				if(temp.allowedToPlay() && student.allowedToPlay())
 				{
-					displayQueue[0] = "";
-					PlayList.playSong();
+					// increments daycount after the song is added
+					if(PlayList.songsQueued.add(temp))
+					{
+						temp.setDayCount(temp.getDayCount() + 1);
+						student.setDayCount(student.getDayCount() + 1);
+//						System.out.println(student.getId());
+					}
+				
+					displayQueue[PlayList.songsQueued.size()-1] = temp.getSongName();
+					System.out.println(displayQueue[PlayList.songsQueued.size()-1]);
+					halp.setListData(displayQueue);
+				
+					//testing for printing the song name
+//					System.out.println(PlayList.songsQueued.peek().getSongName());
+				
+					// plays song if this item is the only thing in the list
+					if(PlayList.songsQueued.size() == 1)
+					{
+						// Would take away current song playing on displayed playlist
+//						displayQueue[0] = "";
+
+						PlayList.playSong();
+						halp.setListData(displayQueue);
+					}
+				}
+				else if( !temp.allowedToPlay() && student.allowedToPlay() )
+				{
+					JOptionPane cannotPlay = new JOptionPane();
+					cannotPlay.showMessageDialog(null, "This song has reached it's maximum plays for today");
+				}
+				else
+				{
+					JOptionPane cannotPlay = new JOptionPane();
+					cannotPlay.showMessageDialog(null, "You have reached your maximum plays for today");					
 				}
 			}
 		}
@@ -129,12 +161,15 @@ public class JukeboxGUI extends JFrame
 	public static void updateDisplayQueue()
 	{
 		int size = PlayList.songsQueued.size();
+		halp.setListData(displayQueue);
 		for(int x = 0; x < size; x ++)
 			displayQueue[x] = displayQueue[x+1];
 		
 		if(size != 0)
-			for(int x = size-1; x < 5; x++)
+			for(int x = size; x < 5; x++)
 				displayQueue[x] = "";
+		if(size == 0)
+			displayQueue[0] = "";
 		
 		halp.setListData(displayQueue);
 	}

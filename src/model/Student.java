@@ -1,5 +1,7 @@
 package model;
 
+import java.util.GregorianCalendar;
+
 public class Student
 {
 
@@ -8,6 +10,8 @@ public class Student
 
 	private int timeLeft;
 	private int dayCount;
+	
+	private GregorianCalendar lastPlayed;
 
 	private boolean activeStudent;
 
@@ -15,13 +19,16 @@ public class Student
 	{
 		this.setId(id);
 		this.password = password;
+		this.timeLeft = 1500*60;
+		this.dayCount = 0;
+		
 	}
 
 	public Boolean allowedToPlay()
 	{
-		// TODO IMPLEMENT METHOD
-
-		return true;
+		if(dayCount < 2)
+			return true;
+		return false;
 	}
 
 	public Boolean activeStudent()
@@ -34,6 +41,16 @@ public class Student
 	/* SETTERS AND GETTERS FOR CLASS Student												   */
 	/*******************************************************************************************/
 
+	public void setLastPlayed()
+	{
+		this.lastPlayed = new GregorianCalendar();
+	}
+	
+	public GregorianCalendar getLastPlayed()
+	{
+		return this.lastPlayed;
+	}
+	
 	public int getTimeLeft()
 	{
 		return timeLeft;
@@ -51,6 +68,7 @@ public class Student
 
 	public void setDayCount(int dayCount)
 	{
+		this.lastPlayed = new GregorianCalendar();
 		this.dayCount = dayCount;
 	}
 

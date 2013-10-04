@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 
 public class LoginGUI extends JFrame
 {
-	private JTextField nameField = new JTextField("User Name");
+	private static JTextField nameField = new JTextField("User Name");
 	private JPasswordField passwordField = new JPasswordField("Password");
 	private JPanel pannel = new JPanel(new FlowLayout());
 	private JPanel buttonPannel = new JPanel();
@@ -90,7 +90,7 @@ public class LoginGUI extends JFrame
 		loginFailedText.setVisible(true);
 	}
 
-	public String getUsername()
+	public static String getUsername()
 	{
 		return nameField.getText();
 	}

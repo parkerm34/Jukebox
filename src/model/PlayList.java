@@ -16,6 +16,8 @@ public class PlayList
 	public static LimitedQueue<Song> songsQueued = new LimitedQueue<Song>(5);
 	private SongList fullList = new SongList();
 	private ArrayList<Song> help = new ArrayList<Song>();
+	private StudentList students = new StudentList();
+	private ArrayList<Student> studentHelper = new ArrayList<Student>();
 	private static ObjectWaitingForSongToEnd waiter = new ObjectWaitingForSongToEnd();
 
 	/*
@@ -37,6 +39,20 @@ public class PlayList
 				return help.get(x);
 		
 		return null;	
+	}
+	
+	public Student findStudent(String studentName, StudentList list)
+	{
+		StudentList rawr = new StudentList();
+		studentHelper = students.getStudents();
+		for(int x = 0; x < rawr.getStudents().size(); x++)
+		{
+			if(rawr.getStudents().get(x).getId().compareTo(studentName) == 0)
+			{
+				return studentHelper.get(x);
+			}
+		}
+		return null;
 	}
 	
 	/*
@@ -69,8 +85,8 @@ public class PlayList
 					+ finishedAt.get(Calendar.MINUTE) + ":"
 					+ finishedAt.get(Calendar.SECOND));
 			
-			JukeboxGUI.updateDisplayQueue();
 			// plays songs when the queue has more than 1 item
+			JukeboxGUI.updateDisplayQueue();
 			playSong();
 		}
 	}

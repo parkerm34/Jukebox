@@ -17,6 +17,8 @@ public class Song {
 		this.songName = songName;
 		this.artistName = artistName;
 		this.songTime = songTime;
+		this.dayCount = 0;
+		this.fullCount = 0;
 		
 		//TODO set up daycount and full count
 	}

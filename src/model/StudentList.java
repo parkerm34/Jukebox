@@ -6,6 +6,15 @@ public class StudentList {
 
 	private ArrayList<Student> students = new ArrayList<Student>();
 
+	public StudentList()
+	{
+		addStudent(new Student("Ali","1111"));
+		addStudent(new Student("Chris","2222" ));
+		addStudent(new Student("River","3333" ));
+		addStudent(new Student("Ryan","4444" ));
+		addStudent(new Student("asdf", "asdf"));
+	}
+	
 	public void addStudent(Student stu) {
 		students.add(stu);
 	}
@@ -31,6 +40,7 @@ public class StudentList {
 		
 		return null;
 	}
+	
 
 	/*******************************************************************************************/
 	/* SETTERS AND GETTERS FOR CLASS STUDENTLIST */
