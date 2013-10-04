@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.GregorianCalendar;
 
 import javax.swing.JButton;
@@ -57,6 +59,8 @@ public class JukeboxGUI extends JFrame
 
 	private void layoutGUI()
 	{
+		addWindowListener(new CloseListener());
+		
 		setTitle("University of Arizona Student Jukebox");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -124,6 +128,70 @@ public class JukeboxGUI extends JFrame
 		add(panel3, BorderLayout.SOUTH);
 	}
 
+	private class CloseListener implements WindowListener {
+		@Override
+		public void windowClosing(WindowEvent e) {
+			String message = "Would you like to save?";
+			String title = "Closing Jukebox Session";
+			
+			int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_CANCEL_OPTION);
+	        if (reply == JOptionPane.YES_OPTION) {
+	          JOptionPane.showMessageDialog(null, "Current State Saved");
+	          System.exit(0);
+	        }
+	        
+	        else if(reply == JOptionPane.NO_OPTION) {
+	           JOptionPane.showMessageDialog(null, "Current State Erased");
+	           System.exit(0);
+	        }
+	        else {}
+		}
+		
+		@Override
+		public void windowActivated(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowClosed(WindowEvent e) {
+			// TODO Auto-generated method stub
+		}
+
+		@Override
+		public void windowDeactivated(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowDeiconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowIconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowOpened(WindowEvent e) {
+			String message = "Would you like to use the previously saved state?";
+			String title = "Opening Jukebox Session";
+			
+			int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+	        if (reply == JOptionPane.YES_OPTION) {
+	          JOptionPane.showMessageDialog(null, "Starting on previously saved state");
+	        }
+	        
+	        else {
+	           JOptionPane.showMessageDialog(null, "Starting on new state");
+	        }
+		}
+	}
+	
 	private class ButtonListener implements ActionListener
 	{
 		@Override
