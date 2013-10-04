@@ -207,7 +207,7 @@ public class JukeboxGUI extends JFrame
 	{
 		this.currentUser = queued.findStudent(loggedIn, studentList);
 		this.userTextArea.setText(this.currentUser.getId());
-		this.timeTextArea.setText("" + this.currentUser.getTimeLeft());
+		this.timeTextArea.setText(this.currentUser.getTimeString());
 		this.songsTextArea.setText("" + (2 - this.currentUser.getDayCount()));
 	}
 }

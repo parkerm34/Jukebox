@@ -8,6 +8,7 @@ public class Student
 	private String id = "";
 	private String password = "";
 
+	private String timeLeftString;
 	private int timeLeft;
 	private int dayCount;
 	
@@ -104,4 +105,13 @@ public class Student
 		this.id = id;
 	}
 
+	public String getTimeString()
+	{
+		String timeString = "";
+		timeString += (this.timeLeft/60)/60 + ":";
+		timeString += (this.timeLeft/60)%60 + ":";
+		timeString += (this.timeLeft%60)%60;
+		
+		return timeString;
+	}
 }
