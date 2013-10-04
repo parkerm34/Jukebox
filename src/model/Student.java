@@ -60,6 +60,10 @@ public class Student
 	{
 		this.timeLeft = timeLeft;
 	}
+	
+	public void subtractFromTimeLeft(int newTime) {
+		timeLeft -= newTime;
+	}
 
 	public int getDayCount()
 	{

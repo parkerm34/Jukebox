@@ -124,6 +124,9 @@ public class JukeboxGUI extends JFrame
 					{
 						temp.setDayCount(temp.getDayCount() + 1);
 						student.setDayCount(student.getDayCount() + 1);
+						//TODO: SUBTRACT TIME!
+						student.subtractFromTimeLeft(temp.getSongTime());
+						System.out.println(student.getTimeLeft());
 //						System.out.println(student.getId());
 					}
 				
