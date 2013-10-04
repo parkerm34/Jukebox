@@ -40,7 +40,10 @@ public class JukeboxGUI extends JFrame
 	private PlayList queued = new PlayList();
 	private static String[] displayQueue = new String[5];
 	private static JList halp = new JList(displayQueue);
-
+	private static Student currentUser;
+	private JTextArea userTextArea = new JTextArea();
+	private JTextArea timeTextArea = new JTextArea();
+	private JTextArea songsTextArea = new JTextArea();
 
 	public JukeboxGUI()
 	{
@@ -92,6 +95,26 @@ public class JukeboxGUI extends JFrame
 		halp.setBackground(Color.lightGray);
 		add(panel, BorderLayout.WEST);
 
+		JPanel panel3 = new JPanel();
+		panel3.setSize(new Dimension(700, 100));
+		
+		JLabel userLabel = new JLabel("Current User: ");
+		JLabel timeLeftLabel = new JLabel("Time Left: ");
+		JLabel songsLeftLabel = new JLabel("Songs Left: ");
+		
+		panel3.add(userLabel);
+		userTextArea.setText("Not logged in");
+		panel3.add(userTextArea);
+		
+		panel3.add(timeLeftLabel);
+		timeTextArea.setText("Not logged in");
+		panel3.add(timeTextArea);
+		
+		panel3.add(songsLeftLabel);
+		songsTextArea.setText("Not logged in");
+		panel3.add(songsTextArea);
+		
+		add(panel3, BorderLayout.SOUTH);
 	}
 
 	private class ButtonListener implements ActionListener
@@ -119,6 +142,7 @@ public class JukeboxGUI extends JFrame
 				// Adds song to queue
 				if(temp.allowedToPlay() && student.allowedToPlay())
 				{
+					
 					// increments daycount after the song is added
 					if(PlayList.songsQueued.add(temp))
 					{
@@ -146,6 +170,8 @@ public class JukeboxGUI extends JFrame
 						PlayList.playSong();
 						halp.setListData(displayQueue);
 					}
+					setCurrentUser(currentUser.getId());
+
 				}
 				else if( !temp.allowedToPlay() && student.allowedToPlay() )
 				{
@@ -175,5 +201,13 @@ public class JukeboxGUI extends JFrame
 			displayQueue[0] = "";
 		
 		halp.setListData(displayQueue);
+	}
+	
+	public void setCurrentUser(String loggedIn)
+	{
+		this.currentUser = queued.findStudent(loggedIn, studentList);
+		this.userTextArea.setText(this.currentUser.getId());
+		this.timeTextArea.setText("" + this.currentUser.getTimeLeft());
+		this.songsTextArea.setText("" + (2 - this.currentUser.getDayCount()));
 	}
 }
