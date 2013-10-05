@@ -1,6 +1,8 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class Song implements Serializable
 {
@@ -10,7 +12,7 @@ public class Song implements Serializable
 	private String artistName;
 	private int songTime;
 	private int dayCount;
-	private int fullCount;
+	private int lastPlayed;
 	
 	
 	
@@ -27,6 +29,8 @@ public class Song implements Serializable
 
 	public boolean allowedToPlay()
 	{
+		if(this.lastPlayed < (new GregorianCalendar().get(Calendar.DAY_OF_YEAR)))
+			this.dayCount = 0;
 		if(dayCount < 5)
 			return true;
 		return false;
@@ -35,6 +39,16 @@ public class Song implements Serializable
 	/*******************************************************************************************/
 	/* SETTERS AND GETTERS FOR CLASS SONG													   */
 	/*******************************************************************************************/
+	
+	public void setLastPlayed()
+	{
+		this.lastPlayed = new GregorianCalendar().get(Calendar.DAY_OF_YEAR);
+	}
+	
+	public int getLastPlayed()
+	{
+		return this.lastPlayed;
+	}
 	
 	public void setSongExt(String songExt)
 	{
@@ -58,6 +72,7 @@ public class Song implements Serializable
 	
 	public void setDayCount(int count)
 	{
+		this.lastPlayed = new GregorianCalendar().get(Calendar.DAY_OF_YEAR);
 		this.dayCount = count;
 	}
 	

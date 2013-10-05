@@ -1,3 +1,12 @@
+/*
+ * Parker Mathewson
+ * Nicholas Pierson
+ * 
+ * This is the PlayList class. This class stores the queued up
+ * songs and plays them in order of FIFO and has a listener to
+ * wait for each song to end before the next plays. The song end
+ * listener also updates the queue by referencing the GUI.
+ */
 package model;
 
 import java.io.Serializable;

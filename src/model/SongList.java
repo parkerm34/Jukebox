@@ -1,3 +1,12 @@
+/*Parker Mathewson
+ * Nicholas Pierson
+ * 
+ * This is the SongList class. This stores all the
+ * songs in an arrayList. This class also initializes
+ * all the songs and tells their path.
+ * This class also implements tablemodel for the list
+ * to be sortable.
+ */
 package model;
 
 import java.io.Serializable;

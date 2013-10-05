@@ -1,3 +1,19 @@
+/*
+ * Parker Mathewson
+ * Nicholas Pierson
+ * 
+ * This is the JukeboxGUI class. This is where the magic happens.
+ * This class obviously creates the GUI for the actual jukebox as well
+ * as created the pop up windows for errors and such. This class holds
+ * the logic portion of what buttons appear and are able to be pressed.
+ * After a button is pressed, this class passes the updated values
+ * back to the model and makes sure all the lists stay updated. You can
+ * also log in and out in this GUI using the logout button.
+ * 
+ * The constructor of this takes in a reference to the model and the controller.
+ * 
+ * 
+ */
 package view;
 
 import java.awt.BorderLayout;
@@ -14,9 +30,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -81,8 +94,6 @@ public class JukeboxGUI extends JFrame
 		setTitle("University of Arizona Student Jukebox");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-		// setBackground(Color.BLUE);
-
 		this.setSize(700, 500);
 		this.setLocation(200, 200);
 
@@ -105,15 +116,12 @@ public class JukeboxGUI extends JFrame
 		songSelect.addActionListener(new ButtonListener());		
 
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(5, 1, 5, 5));
-		
-
+		panel.setLayout(new GridLayout(5, 1, 5, 5));		
 		
 		JLabel queueLabel = new JLabel("  Up next...  ", JLabel.CENTER);
 		panel.add(queueLabel);
 		queueLabel.setVerticalAlignment(JLabel.BOTTOM);
 		queueLabel.setVerticalTextPosition(JLabel.BOTTOM);
-		
 		
 		panel.add(halp);
 		panel.setSize(new Dimension(100, 500));
@@ -235,12 +243,12 @@ public class JukeboxGUI extends JFrame
 	                displayQueue = (String[]) inputStream.readObject();
 	                inputStream.close();
 	                
-	                System.out.println(displayQueue[0]);
-	                System.out.println(displayQueue[1]);
 	                System.out.println(queued.songsQueued.get(0).getSongName());
 	                
-//	                updateDisplayQueue();
-					halp.setListData(displayQueue);
+	                updateDisplayQueue();
+	                halp.setListData(displayQueue);
+	                updateDisplayQueue();
+	                
 	                
 	                // TODO Set displayQueue to display the queue on the left sidebar
 	                // Should be stored in halp. Cant figure it out.
@@ -250,8 +258,8 @@ public class JukeboxGUI extends JFrame
 	        	catch (Exception exep)
 	        	{
 	                String errorMes = "Error reading serialzed objects\n";
-	                errorMes += "Run tests.InitializeAccountAndTransactionCollections";
-	                JOptionPane.showMessageDialog(null, message);
+	                errorMes += "Run tests.";
+	                JOptionPane.showMessageDialog(null, errorMes);
 	        	}
 	          JOptionPane.showMessageDialog(null, "Starting on previously saved state");
 	        }
@@ -271,56 +279,61 @@ public class JukeboxGUI extends JFrame
 			{
 				if(currentUser != null)
 				{
-					int viewRow = songTable.getSelectedRow();
-				
-					if (viewRow < 0)
-						System.out.println("index " + viewRow + " means no row is selected");
-					else
+					if(PlayList.songsQueued.size() < 5)
 					{
-						int modelRow = songTable.convertRowIndexToModel(viewRow);
-						System.out.println("index " + viewRow + " has the name '"
-								+ songTableModel.getValueAt(modelRow, 0) + "'");
-					
-						int songIndex = queued.find(songTableModel.getValueAt(modelRow,  0).toString());
-						int studentIndex = queued.findStudent(LoginGUI.getUsername(), studentList);
+						int viewRow = songTable.getSelectedRow();
 				
-				
-						// Adds song to queue
-						if(model.songs.getList().get(songIndex).allowedToPlay() && model.students.getStudents().get(studentIndex).allowedToPlay())
+						if (viewRow < 0)
 						{
-					
-							// increments daycount after the song is added
-							if(PlayList.songsQueued.add(model.songs.getList().get(songIndex)))
-							{
-								model.songs.getList().get(songIndex).setDayCount(model.songs.getList().get(songIndex).getDayCount() + 1);
-								model.students.getStudents().get(studentIndex).setDayCount(model.students.getStudents().get(studentIndex).getDayCount() + 1);
-								model.students.getStudents().get(studentIndex).subtractFromTimeLeft(model.songs.getList().get(songIndex).getSongTime());
-								System.out.println(model.students.getStudents().get(studentIndex).getTimeLeft());
-							}
-				
-							displayQueue[PlayList.songsQueued.size()-1] = model.songs.getList().get(songIndex).getSongName();
-							System.out.println(displayQueue[PlayList.songsQueued.size()-1]);
-							halp.setListData(displayQueue);
-				
-							// plays song if this item is the only thing in the list
-							if(PlayList.songsQueued.size() == 1)
-							{
-								PlayList.playSong();
-								halp.setListData(displayQueue);
-							}
-							setCurrentUser(currentUser.getId());
-
-						}
-						else if( !model.songs.getList().get(songIndex).allowedToPlay() && model.students.getStudents().get(studentIndex).allowedToPlay() )
-						{
-							JOptionPane cannotPlay = new JOptionPane();
-							cannotPlay.showMessageDialog(null, "This song has reached it's maximum plays for today");
+							JOptionPane.showMessageDialog(null, "Please select song");
 						}
 						else
 						{
-							JOptionPane cannotPlay = new JOptionPane();
-							cannotPlay.showMessageDialog(null, "You have reached your maximum plays for today");					
+							int modelRow = songTable.convertRowIndexToModel(viewRow);
+					
+							int songIndex = queued.find(songTableModel.getValueAt(modelRow,  0).toString());
+							int studentIndex = queued.findStudent(LoginGUI.getUsername(), studentList);
+				
+				
+							// Adds song to queue
+							if(model.songs.getList().get(songIndex).allowedToPlay() && model.students.getStudents().get(studentIndex).allowedToPlay())
+							{
+					
+								// increments daycount after the song is added
+								if(PlayList.songsQueued.add(model.songs.getList().get(songIndex)))
+								{
+									model.songs.getList().get(songIndex).setDayCount(model.songs.getList().get(songIndex).getDayCount() + 1);
+									model.students.getStudents().get(studentIndex).setDayCount(model.students.getStudents().get(studentIndex).getDayCount() + 1);
+									model.students.getStudents().get(studentIndex).subtractFromTimeLeft(model.songs.getList().get(songIndex).getSongTime());
+								}	
+				
+								displayQueue[PlayList.songsQueued.size()-1] = model.songs.getList().get(songIndex).getSongName();
+								halp.setListData(displayQueue);
+								
+								// plays song if this item is the only thing in the list
+								if(PlayList.songsQueued.size() == 1)
+								{
+									PlayList.playSong();
+								}
+								setCurrentUser(currentUser.getId());
+
+							}
+							else if( !model.songs.getList().get(songIndex).allowedToPlay() && model.students.getStudents().get(studentIndex).allowedToPlay() )
+							{
+								JOptionPane cannotPlay = new JOptionPane();
+								cannotPlay.showMessageDialog(null, "This song has reached it's maximum plays for today");
+							}
+							else
+							{
+								JOptionPane cannotPlay = new JOptionPane();
+								cannotPlay.showMessageDialog(null, "You have reached your maximum plays for today");					
+							}
 						}
+					}
+					else
+					{
+						JOptionPane maxQueue = new JOptionPane();
+						maxQueue.showMessageDialog(null, "There are already 5 songs queued.");											
 					}
 				}
 				else
@@ -341,7 +354,6 @@ public class JukeboxGUI extends JFrame
 	public static void updateDisplayQueue()
 	{
 		int size = PlayList.songsQueued.size();
-		halp.setListData(displayQueue);
 		for(int x = 0; x < size; x ++)
 			displayQueue[x] = displayQueue[x+1];
 		
@@ -351,7 +363,6 @@ public class JukeboxGUI extends JFrame
 		if(size == 0)
 			displayQueue[0] = "";
 		
-		halp.setListData(displayQueue);
 	}
 	
 	public void setCurrentUser(String loggedIn)

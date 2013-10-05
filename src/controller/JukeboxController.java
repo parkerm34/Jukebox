@@ -1,3 +1,11 @@
+/*Parker Mathewson
+ * Homer Glascock IV
+ * Nicholas Pierson
+ * 
+ * This is the JukeboxController class. This was done to try to
+ * teach ourselves more about MVC style programming. This holds
+ * the model and view classes needed for the jukebox to run smoothly.
+ */
 package controller;
 
 import java.awt.event.ActionEvent;
@@ -8,8 +16,6 @@ import model.JukeboxModel;
 import view.JukeboxGUI;
 import view.LoginGUI;
 
-/*Parker Mathewson Homer Glascock IV\
- * hi have a look at this http://www.cs.wcupa.edu/~rkline/java/mvc-design.html*/
 
 public class JukeboxController implements Serializable
 {
@@ -37,7 +43,6 @@ public class JukeboxController implements Serializable
 
 		loginWindow.setVisible(true);
 		
-		System.out.println(theModel.students.getStudents().get(4).getTimeLeft());
 	}
 	
 	private void login(String username, String password)
