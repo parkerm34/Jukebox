@@ -21,7 +21,6 @@ public class Song implements Serializable
 		this.artistName = artistName;
 		this.songTime = songTime;
 		this.dayCount = 0;
-		this.fullCount = 0;
 		
 		//TODO set up daycount and full count
 	}
@@ -62,11 +61,6 @@ public class Song implements Serializable
 		this.dayCount = count;
 	}
 	
-	public void setFullCount(int count)
-	{
-		this.fullCount = count;
-	}
-	
 	public String getSongExt()
 	{
 		return this.songExt;
@@ -90,10 +84,5 @@ public class Song implements Serializable
 	public int getDayCount()
 	{
 		return this.dayCount;
-	}
-	
-	public int getFullCount()
-	{
-		return this.fullCount;
 	}
 }

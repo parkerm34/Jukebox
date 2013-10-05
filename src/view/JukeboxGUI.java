@@ -240,7 +240,7 @@ public class JukeboxGUI extends JFrame
 	                System.out.println(queued.songsQueued.get(0).getSongName());
 	                
 //	                updateDisplayQueue();
-	                halp.setListData(displayQueue);
+					halp.setListData(displayQueue);
 	                
 	                // TODO Set displayQueue to display the queue on the left sidebar
 	                // Should be stored in halp. Cant figure it out.

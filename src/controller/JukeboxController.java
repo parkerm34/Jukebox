@@ -44,7 +44,6 @@ public class JukeboxController implements Serializable
 	{
 		if(theModel.login(loginWindow.getUsername(), loginWindow.getPassword()))
 		{
-			System.out.println("fuck Yeah");
 			theGUI.setCurrentUser(loginWindow.getUsername());
 			theGUI.setVisible(true);
 			loginWindow.setVisible(false);
